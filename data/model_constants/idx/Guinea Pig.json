@@ -1,0 +1,14 @@
+{
+    "stim_start": null,
+    "stim_end": null, 
+    "stim_period": 48,
+    "Pnak" : 44,
+    "PCa" : 35,
+    "GKs" : 19,
+    "GKr" : 17,
+    "GK1" : 25,
+    "PNab" : 31,
+    "GNa" : 13,
+    "GNaL" : 15,
+    "Gncx" : 42
+}

@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\caption{Feasible ranges for each action potential feature, by species. A simulated beat falling outside any of these is rejected as non-physiological. Ranges are derived by scaling one set of human bounds onto each species by the ratio of its baseline feature to the human value.}
+\label{tab:supp-feasible-ranges}
+\footnotesize
+\begin{tabular}{l l c c c c c c}
+\toprule
+\textbf{Feature} & \textbf{Unit} & \textbf{Human} & \textbf{Dog} & \textbf{Guinea Pig} & \textbf{Mouse} & \textbf{Pig} & \textbf{Rabbit} \\
+\midrule
+$\mathrm{APD}_{40}$ & \si{\milli\second} & 85--320 & 72--271 & 54.5--205 & 1.36--5.11 & 98.1--369 & 111--418 \\
+$\mathrm{APD}_{50}$ & \si{\milli\second} & 110--350 & 98.7--314 & 72.9--232 & 2.17--6.9 & 125--396 & 144--460 \\
+$\mathrm{APD}_{90}$ & \si{\milli\second} & 180--440 & 165--402 & 120--293 & 11.9--29.2 & 193--471 & 232--568 \\
+$\mathrm{Tri}_{90-40}$ & \si{\milli\second} & 50--150 & 56.1--168 & 37.2--112 & 11.1--33.4 & 40.6--122 & 62.1--186 \\
+$(\mathrm{d}V/\mathrm{d}t)_{\max}$ & \si{\milli\volt\per\milli\second} & 100--1e+03 & 17.7--177 & 49.6--496 & 56.3--563 & 41--410 & 90.3--903 \\
+$V_{\mathrm{peak}}$ & \si{\milli\volt} & 10--55 & 10.8--59.5 & 14.7--80.8 & 10.7--59 & 14.1--77.6 & 15--82.3 \\
+$\mathrm{RMP}$ & \si{\milli\volt} & -95---80 & -89.8---75.6 & -89.1---75.1 & -90.3---76 & -91.4---77 & -91.1---76.7 \\
+$\mathrm{CTD}_{50}$ & \si{\milli\second} & 120--420 & 181--633 & 19.2--67.3 & 115--402 & 292--1.02e+03 & 331--1.16e+03 \\
+$\mathrm{CTD}_{90}$ & \si{\milli\second} & 220--785 & 333--1.19e+03 & 101--359 & 324--1.15e+03 & 428--1.53e+03 & 466--1.66e+03 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,17 @@
+{
+    "stim_period":13, 
+    "stim_start":12, 
+    "stim_end":null,
+    "Pnak" : 68,
+    "Jup" : 28,
+    "PCa" : 39,
+    "cmdnmax" : 16,
+    "csqnmax" : 17,
+    "Gto" : 59,
+    "GKs" : 62,
+    "GKr" : 65,
+    "Jrel" : 20,
+    "PNab" : 58,
+    "GNa" : 57,
+    "Gncx" : 51 
+}

@@ -1,0 +1,20 @@
+# Python 3.13.1
+#
+# Direct dependencies, pinned to the versions the published results were produced
+# with.  Install with:
+#
+#     python -m venv .venv && source .venv/bin/activate
+#     pip install -r requirements.txt
+#
+# This repository generates the simulated APD dataset only. The Gaussian process
+# analysis, and its GPyTorch dependencies, live in the companion repository.
+
+numpy==2.2.4
+scipy==1.15.2
+pandas==2.2.3
+
+# The cardiac cell models JIT-compile their rate equations with numba.
+numba==0.61.2
+llvmlite==0.44.0
+
+matplotlib==3.10.1
