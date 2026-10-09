@@ -6,7 +6,7 @@ is paced until it settles into a *new* limit cycle.  The APD90 of that new cycle
 is the measurement; the state it settled into is saved so the run can be
 resumed or inspected.
 
-This is the expensive step of the pipeline: 11 concentrations x up to 25,000
+This is the expensive step of the pipeline: 9 concentrations x up to 25,000
 beats each, per subject.  On a cluster, run it as a PBS array job (see
 ``simulation/shell/run_simulate_drug_block.sh``) — the task index is unpacked
 into a (species, drug, subject) triple by :func:`unpack_array_index`.

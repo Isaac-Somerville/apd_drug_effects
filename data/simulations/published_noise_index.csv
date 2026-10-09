@@ -5459,16 +5459,6 @@ Guinea Pig,diltiazem,21,244.0,7556
 Guinea Pig,diltiazem,21,284.67,7557
 Guinea Pig,diltiazem,21,325.33,7558
 Guinea Pig,diltiazem,21,366.0,7559
-Guinea Pig,diltiazem,23,0.0,7560
-Guinea Pig,diltiazem,23,40.67,7561
-Guinea Pig,diltiazem,23,81.33,7562
-Guinea Pig,diltiazem,23,122.0,7563
-Guinea Pig,diltiazem,23,162.67,7564
-Guinea Pig,diltiazem,23,203.33,7565
-Guinea Pig,diltiazem,23,244.0,7566
-Guinea Pig,diltiazem,23,284.67,7567
-Guinea Pig,diltiazem,23,325.33,7568
-Guinea Pig,diltiazem,23,366.0,7569
 Guinea Pig,diltiazem,25,0.0,7570
 Guinea Pig,diltiazem,25,40.67,7571
 Guinea Pig,diltiazem,25,81.33,7572
@@ -7318,16 +7308,6 @@ Human,bepridil,29,66.0,1926
 Human,bepridil,29,77.0,1927
 Human,bepridil,29,88.0,1928
 Human,bepridil,29,99.0,1929
-Human,bepridil,31,0.0,1930
-Human,bepridil,31,11.0,1931
-Human,bepridil,31,22.0,1932
-Human,bepridil,31,33.0,1933
-Human,bepridil,31,44.0,1934
-Human,bepridil,31,55.0,1935
-Human,bepridil,31,66.0,1936
-Human,bepridil,31,77.0,1937
-Human,bepridil,31,88.0,1938
-Human,bepridil,31,99.0,1939
 Human,chlorpromazine,0,0.0,4140
 Human,chlorpromazine,0,12.67,4141
 Human,chlorpromazine,0,25.33,4142
@@ -7548,16 +7528,6 @@ Human,chlorpromazine,29,76.0,4356
 Human,chlorpromazine,29,88.67,4357
 Human,chlorpromazine,29,101.33,4358
 Human,chlorpromazine,29,114.0,4359
-Human,chlorpromazine,31,0.0,4360
-Human,chlorpromazine,31,12.67,4361
-Human,chlorpromazine,31,25.33,4362
-Human,chlorpromazine,31,38.0,4363
-Human,chlorpromazine,31,50.67,4364
-Human,chlorpromazine,31,63.33,4365
-Human,chlorpromazine,31,76.0,4366
-Human,chlorpromazine,31,88.67,4367
-Human,chlorpromazine,31,101.33,4368
-Human,chlorpromazine,31,114.0,4369
 Human,cisapride,0,0.0,6490
 Human,cisapride,0,0.87,6491
 Human,cisapride,0,1.73,6492
@@ -7978,16 +7948,6 @@ Human,diltiazem,29,244.0,8936
 Human,diltiazem,29,284.67,8937
 Human,diltiazem,29,325.33,8938
 Human,diltiazem,29,366.0,8939
-Human,diltiazem,31,0.0,8940
-Human,diltiazem,31,40.67,8941
-Human,diltiazem,31,81.33,8942
-Human,diltiazem,31,122.0,8943
-Human,diltiazem,31,162.67,8944
-Human,diltiazem,31,203.33,8945
-Human,diltiazem,31,244.0,8946
-Human,diltiazem,31,284.67,8947
-Human,diltiazem,31,325.33,8948
-Human,diltiazem,31,366.0,8949
 Human,dofetilide,0,0.0,11080
 Human,dofetilide,0,0.67,11081
 Human,dofetilide,0,1.33,11082
@@ -8178,16 +8138,6 @@ Human,dofetilide,29,4.0,11266
 Human,dofetilide,29,4.67,11267
 Human,dofetilide,29,5.33,11268
 Human,dofetilide,29,6.0,11269
-Human,dofetilide,31,0.0,11270
-Human,dofetilide,31,0.67,11271
-Human,dofetilide,31,1.33,11272
-Human,dofetilide,31,2.0,11273
-Human,dofetilide,31,2.67,11274
-Human,dofetilide,31,3.33,11275
-Human,dofetilide,31,4.0,11276
-Human,dofetilide,31,4.67,11277
-Human,dofetilide,31,5.33,11278
-Human,dofetilide,31,6.0,11279
 Human,mexiletine,0,0.0,13340
 Human,mexiletine,0,1376.33,13341
 Human,mexiletine,0,2752.67,13342
@@ -8358,16 +8308,6 @@ Human,mexiletine,29,8258.0,13506
 Human,mexiletine,29,9634.33,13507
 Human,mexiletine,29,11010.67,13508
 Human,mexiletine,29,12387.0,13509
-Human,mexiletine,31,0.0,13510
-Human,mexiletine,31,1376.33,13511
-Human,mexiletine,31,2752.67,13512
-Human,mexiletine,31,4129.0,13513
-Human,mexiletine,31,5505.33,13514
-Human,mexiletine,31,6881.67,13515
-Human,mexiletine,31,8258.0,13516
-Human,mexiletine,31,9634.33,13517
-Human,mexiletine,31,11010.67,13518
-Human,mexiletine,31,12387.0,13519
 Human,ondansetron,0,0.0,15629
 Human,ondansetron,0,46.33,15630
 Human,ondansetron,0,92.67,15631
@@ -8588,16 +8528,6 @@ Human,ondansetron,29,278.0,15845
 Human,ondansetron,29,324.33,15846
 Human,ondansetron,29,370.67,15847
 Human,ondansetron,29,417.0,15848
-Human,ondansetron,31,0.0,15849
-Human,ondansetron,31,46.33,15850
-Human,ondansetron,31,92.67,15851
-Human,ondansetron,31,139.0,15852
-Human,ondansetron,31,185.33,15853
-Human,ondansetron,31,231.67,15854
-Human,ondansetron,31,278.0,15855
-Human,ondansetron,31,324.33,15856
-Human,ondansetron,31,370.67,15857
-Human,ondansetron,31,417.0,15858
 Human,quinidine,0,0.0,17559
 Human,quinidine,0,1079.0,17560
 Human,quinidine,0,2158.0,17561
@@ -8798,16 +8728,6 @@ Human,quinidine,29,6474.0,17755
 Human,quinidine,29,7553.0,17756
 Human,quinidine,29,8632.0,17757
 Human,quinidine,29,9711.0,17758
-Human,quinidine,31,0.0,17759
-Human,quinidine,31,1079.0,17760
-Human,quinidine,31,2158.0,17761
-Human,quinidine,31,3237.0,17762
-Human,quinidine,31,4316.0,17763
-Human,quinidine,31,5395.0,17764
-Human,quinidine,31,6474.0,17765
-Human,quinidine,31,7553.0,17766
-Human,quinidine,31,8632.0,17767
-Human,quinidine,31,9711.0,17768
 Human,ranolazine,0,0.0,19889
 Human,ranolazine,0,649.4,19890
 Human,ranolazine,0,1298.8,19891
@@ -9008,16 +8928,6 @@ Human,ranolazine,29,3896.4,20085
 Human,ranolazine,29,4545.8,20086
 Human,ranolazine,29,5195.2,20087
 Human,ranolazine,29,5844.6,20088
-Human,ranolazine,31,0.0,20089
-Human,ranolazine,31,649.4,20090
-Human,ranolazine,31,1298.8,20091
-Human,ranolazine,31,1948.2,20092
-Human,ranolazine,31,2597.6,20093
-Human,ranolazine,31,3247.0,20094
-Human,ranolazine,31,3896.4,20095
-Human,ranolazine,31,4545.8,20096
-Human,ranolazine,31,5195.2,20097
-Human,ranolazine,31,5844.6,20098
 Human,sotalol,0,0.0,22179
 Human,sotalol,0,4896.67,22180
 Human,sotalol,0,9793.33,22181
@@ -9218,16 +9128,6 @@ Human,sotalol,29,29380.0,22375
 Human,sotalol,29,34276.67,22376
 Human,sotalol,29,39173.33,22377
 Human,sotalol,29,44070.0,22378
-Human,sotalol,31,0.0,22379
-Human,sotalol,31,4896.67,22380
-Human,sotalol,31,9793.33,22381
-Human,sotalol,31,14690.0,22382
-Human,sotalol,31,19586.67,22383
-Human,sotalol,31,24483.33,22384
-Human,sotalol,31,29380.0,22385
-Human,sotalol,31,34276.67,22386
-Human,sotalol,31,39173.33,22387
-Human,sotalol,31,44070.0,22388
 Human,terfenadine,0,0.0,24449
 Human,terfenadine,0,1.33,24450
 Human,terfenadine,0,2.67,24451
@@ -9688,16 +9588,6 @@ Human,verapamil,30,162.0,26915
 Human,verapamil,30,189.0,26916
 Human,verapamil,30,216.0,26917
 Human,verapamil,30,243.0,26918
-Human,verapamil,31,0.0,26919
-Human,verapamil,31,27.0,26920
-Human,verapamil,31,54.0,26921
-Human,verapamil,31,81.0,26922
-Human,verapamil,31,108.0,26923
-Human,verapamil,31,135.0,26924
-Human,verapamil,31,162.0,26925
-Human,verapamil,31,189.0,26926
-Human,verapamil,31,216.0,26927
-Human,verapamil,31,243.0,26928
 Mouse,bepridil,0,0.0,480
 Mouse,bepridil,0,11.0,481
 Mouse,bepridil,0,22.0,482
@@ -14488,16 +14378,6 @@ Pig,chlorpromazine,29,76.0,3506
 Pig,chlorpromazine,29,88.67,3507
 Pig,chlorpromazine,29,101.33,3508
 Pig,chlorpromazine,29,114.0,3509
-Pig,chlorpromazine,31,0.0,3510
-Pig,chlorpromazine,31,12.67,3511
-Pig,chlorpromazine,31,25.33,3512
-Pig,chlorpromazine,31,38.0,3513
-Pig,chlorpromazine,31,50.67,3514
-Pig,chlorpromazine,31,63.33,3515
-Pig,chlorpromazine,31,76.0,3516
-Pig,chlorpromazine,31,88.67,3517
-Pig,chlorpromazine,31,101.33,3518
-Pig,chlorpromazine,31,114.0,3519
 Pig,cisapride,0,0.0,5640
 Pig,cisapride,0,0.87,5641
 Pig,cisapride,0,1.73,5642
@@ -17298,16 +17178,6 @@ Rabbit,bepridil,30,66.0,1356
 Rabbit,bepridil,30,77.0,1357
 Rabbit,bepridil,30,88.0,1358
 Rabbit,bepridil,30,99.0,1359
-Rabbit,bepridil,31,0.0,1360
-Rabbit,bepridil,31,11.0,1361
-Rabbit,bepridil,31,22.0,1362
-Rabbit,bepridil,31,33.0,1363
-Rabbit,bepridil,31,44.0,1364
-Rabbit,bepridil,31,55.0,1365
-Rabbit,bepridil,31,66.0,1366
-Rabbit,bepridil,31,77.0,1367
-Rabbit,bepridil,31,88.0,1368
-Rabbit,bepridil,31,99.0,1369
 Rabbit,chlorpromazine,0,0.0,3520
 Rabbit,chlorpromazine,0,12.67,3521
 Rabbit,chlorpromazine,0,25.33,3522
@@ -17558,16 +17428,6 @@ Rabbit,chlorpromazine,30,76.0,3766
 Rabbit,chlorpromazine,30,88.67,3767
 Rabbit,chlorpromazine,30,101.33,3768
 Rabbit,chlorpromazine,30,114.0,3769
-Rabbit,chlorpromazine,31,0.0,3770
-Rabbit,chlorpromazine,31,12.67,3771
-Rabbit,chlorpromazine,31,25.33,3772
-Rabbit,chlorpromazine,31,38.0,3773
-Rabbit,chlorpromazine,31,50.67,3774
-Rabbit,chlorpromazine,31,63.33,3775
-Rabbit,chlorpromazine,31,76.0,3776
-Rabbit,chlorpromazine,31,88.67,3777
-Rabbit,chlorpromazine,31,101.33,3778
-Rabbit,chlorpromazine,31,114.0,3779
 Rabbit,cisapride,0,0.0,5890
 Rabbit,cisapride,0,0.87,5891
 Rabbit,cisapride,0,1.73,5892
@@ -17818,16 +17678,6 @@ Rabbit,cisapride,30,5.2,6136
 Rabbit,cisapride,30,6.07,6137
 Rabbit,cisapride,30,6.93,6138
 Rabbit,cisapride,30,7.8,6139
-Rabbit,cisapride,31,0.0,6140
-Rabbit,cisapride,31,0.87,6141
-Rabbit,cisapride,31,1.73,6142
-Rabbit,cisapride,31,2.6,6143
-Rabbit,cisapride,31,3.47,6144
-Rabbit,cisapride,31,4.33,6145
-Rabbit,cisapride,31,5.2,6146
-Rabbit,cisapride,31,6.07,6147
-Rabbit,cisapride,31,6.93,6148
-Rabbit,cisapride,31,7.8,6149
 Rabbit,diltiazem,0,0.0,8190
 Rabbit,diltiazem,0,40.67,8191
 Rabbit,diltiazem,0,81.33,8192
@@ -18078,16 +17928,6 @@ Rabbit,diltiazem,30,244.0,8436
 Rabbit,diltiazem,30,284.67,8437
 Rabbit,diltiazem,30,325.33,8438
 Rabbit,diltiazem,30,366.0,8439
-Rabbit,diltiazem,31,0.0,8440
-Rabbit,diltiazem,31,40.67,8441
-Rabbit,diltiazem,31,81.33,8442
-Rabbit,diltiazem,31,122.0,8443
-Rabbit,diltiazem,31,162.67,8444
-Rabbit,diltiazem,31,203.33,8445
-Rabbit,diltiazem,31,244.0,8446
-Rabbit,diltiazem,31,284.67,8447
-Rabbit,diltiazem,31,325.33,8448
-Rabbit,diltiazem,31,366.0,8449
 Rabbit,dofetilide,0,0.0,10480
 Rabbit,dofetilide,0,0.67,10481
 Rabbit,dofetilide,0,1.33,10482
@@ -18338,16 +18178,6 @@ Rabbit,dofetilide,30,4.0,10726
 Rabbit,dofetilide,30,4.67,10727
 Rabbit,dofetilide,30,5.33,10728
 Rabbit,dofetilide,30,6.0,10729
-Rabbit,dofetilide,31,0.0,10730
-Rabbit,dofetilide,31,0.67,10731
-Rabbit,dofetilide,31,1.33,10732
-Rabbit,dofetilide,31,2.0,10733
-Rabbit,dofetilide,31,2.67,10734
-Rabbit,dofetilide,31,3.33,10735
-Rabbit,dofetilide,31,4.0,10736
-Rabbit,dofetilide,31,4.67,10737
-Rabbit,dofetilide,31,5.33,10738
-Rabbit,dofetilide,31,6.0,10739
 Rabbit,mexiletine,0,0.0,12750
 Rabbit,mexiletine,0,1376.33,12751
 Rabbit,mexiletine,0,2752.67,12752
@@ -18598,16 +18428,6 @@ Rabbit,mexiletine,30,8258.0,12996
 Rabbit,mexiletine,30,9634.33,12997
 Rabbit,mexiletine,30,11010.67,12998
 Rabbit,mexiletine,30,12387.0,12999
-Rabbit,mexiletine,31,0.0,13000
-Rabbit,mexiletine,31,1376.33,13001
-Rabbit,mexiletine,31,2752.67,13002
-Rabbit,mexiletine,31,4129.0,13003
-Rabbit,mexiletine,31,5505.33,13004
-Rabbit,mexiletine,31,6881.67,13005
-Rabbit,mexiletine,31,8258.0,13006
-Rabbit,mexiletine,31,9634.33,13007
-Rabbit,mexiletine,31,11010.67,13008
-Rabbit,mexiletine,31,12387.0,13009
 Rabbit,ondansetron,0,0.0,15049
 Rabbit,ondansetron,0,46.33,15050
 Rabbit,ondansetron,0,92.67,15051
@@ -18858,16 +18678,6 @@ Rabbit,ondansetron,30,278.0,15295
 Rabbit,ondansetron,30,324.33,15296
 Rabbit,ondansetron,30,370.67,15297
 Rabbit,ondansetron,30,417.0,15298
-Rabbit,ondansetron,31,0.0,15299
-Rabbit,ondansetron,31,46.33,15300
-Rabbit,ondansetron,31,92.67,15301
-Rabbit,ondansetron,31,139.0,15302
-Rabbit,ondansetron,31,185.33,15303
-Rabbit,ondansetron,31,231.67,15304
-Rabbit,ondansetron,31,278.0,15305
-Rabbit,ondansetron,31,324.33,15306
-Rabbit,ondansetron,31,370.67,15307
-Rabbit,ondansetron,31,417.0,15308
 Rabbit,quinidine,0,0.0,17019
 Rabbit,quinidine,0,1079.0,17020
 Rabbit,quinidine,0,2158.0,17021
@@ -19368,16 +19178,6 @@ Rabbit,ranolazine,30,3896.4,19545
 Rabbit,ranolazine,30,4545.8,19546
 Rabbit,ranolazine,30,5195.2,19547
 Rabbit,ranolazine,30,5844.6,19548
-Rabbit,ranolazine,31,0.0,19549
-Rabbit,ranolazine,31,649.4,19550
-Rabbit,ranolazine,31,1298.8,19551
-Rabbit,ranolazine,31,1948.2,19552
-Rabbit,ranolazine,31,2597.6,19553
-Rabbit,ranolazine,31,3247.0,19554
-Rabbit,ranolazine,31,3896.4,19555
-Rabbit,ranolazine,31,4545.8,19556
-Rabbit,ranolazine,31,5195.2,19557
-Rabbit,ranolazine,31,5844.6,19558
 Rabbit,sotalol,0,0.0,21589
 Rabbit,sotalol,0,4896.67,21590
 Rabbit,sotalol,0,9793.33,21591
@@ -19628,16 +19428,6 @@ Rabbit,sotalol,30,29380.0,21835
 Rabbit,sotalol,30,34276.67,21836
 Rabbit,sotalol,30,39173.33,21837
 Rabbit,sotalol,30,44070.0,21838
-Rabbit,sotalol,31,0.0,21839
-Rabbit,sotalol,31,4896.67,21840
-Rabbit,sotalol,31,9793.33,21841
-Rabbit,sotalol,31,14690.0,21842
-Rabbit,sotalol,31,19586.67,21843
-Rabbit,sotalol,31,24483.33,21844
-Rabbit,sotalol,31,29380.0,21845
-Rabbit,sotalol,31,34276.67,21846
-Rabbit,sotalol,31,39173.33,21847
-Rabbit,sotalol,31,44070.0,21848
 Rabbit,terfenadine,0,0.0,23859
 Rabbit,terfenadine,0,1.33,23860
 Rabbit,terfenadine,0,2.67,23861
@@ -19888,16 +19678,6 @@ Rabbit,terfenadine,30,8.0,24105
 Rabbit,terfenadine,30,9.33,24106
 Rabbit,terfenadine,30,10.67,24107
 Rabbit,terfenadine,30,12.0,24108
-Rabbit,terfenadine,31,0.0,24109
-Rabbit,terfenadine,31,1.33,24110
-Rabbit,terfenadine,31,2.67,24111
-Rabbit,terfenadine,31,4.0,24112
-Rabbit,terfenadine,31,5.33,24113
-Rabbit,terfenadine,31,6.67,24114
-Rabbit,terfenadine,31,8.0,24115
-Rabbit,terfenadine,31,9.33,24116
-Rabbit,terfenadine,31,10.67,24117
-Rabbit,terfenadine,31,12.0,24118
 Rabbit,verapamil,0,0.0,26149
 Rabbit,verapamil,0,27.0,26150
 Rabbit,verapamil,0,54.0,26151
@@ -20148,13 +19928,3 @@ Rabbit,verapamil,30,162.0,26395
 Rabbit,verapamil,30,189.0,26396
 Rabbit,verapamil,30,216.0,26397
 Rabbit,verapamil,30,243.0,26398
-Rabbit,verapamil,31,0.0,26399
-Rabbit,verapamil,31,27.0,26400
-Rabbit,verapamil,31,54.0,26401
-Rabbit,verapamil,31,81.0,26402
-Rabbit,verapamil,31,108.0,26403
-Rabbit,verapamil,31,135.0,26404
-Rabbit,verapamil,31,162.0,26405
-Rabbit,verapamil,31,189.0,26406
-Rabbit,verapamil,31,216.0,26407
-Rabbit,verapamil,31,243.0,26408

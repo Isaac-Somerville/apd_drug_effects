@@ -43,7 +43,7 @@ CONSTANT_BASE_VALUE_DIR = DATA_ROOT / "model_constants" / "base_values"
 
 # Coefficients of variation used when sampling virtual subjects.
 PARAMETER_CVS = DATA_ROOT / "ap_features" / "parameter_CVs.json"
-# Integration steps per cycle needed for a converged APD, per species.
+# Integration steps per cycle, per species, chosen by hand (see cell_models/base.py).
 MIN_STEPS_NEEDED = DATA_ROOT / "ap_features" / "min_steps_needed_rounded.json"
 # Physiological feasibility bounds on AP features, per species and cycle count.
 AP_LIMITS_DIR = DATA_ROOT / "ap_features" / "limits"
@@ -79,6 +79,10 @@ TABLES_OUT = OUTPUT_ROOT / "tables"
 
 #: Verification reports and comparison figures.
 VERIFICATION_OUT = OUTPUT_ROOT / "verification"
+
+#: Regenerated AP-feature metadata (feature values, feasibility bounds and
+#: convergence tolerances). The ``compute_*`` scripts write here by default.
+AP_FEATURES_OUT = OUTPUT_ROOT / "ap_features"
 
 
 def ensure(path: Path) -> Path:

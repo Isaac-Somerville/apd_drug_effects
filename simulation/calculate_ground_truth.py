@@ -73,10 +73,24 @@ def ground_truth_table(df, drug_list, species_list, conc_multiplier):
             if rows.empty:
                 continue
             # Mean across subjects at each concentration, then the largest.
-            per_conc = rows.groupby("Drug_Concentration")["APD_90_relative"].mean()
+            x = rows["Drug_Concentration"].to_numpy()
+            y = rows["APD_90_relative"].to_numpy()
+            per_conc = np.array([y[x == c].mean() for c in np.unique(x)])
             table.loc[drug, species] = per_conc.max()
 
-    return table
+    return _truncate_to_published_precision(table)
+
+
+def _truncate_to_published_precision(table):
+    """Truncate every entry to 16 decimal places, as the published tables are.
+
+    This replays a step of the research pipeline: 
+    the published tables hold the full-precision values truncated
+    (not rounded) toward zero at the 16th decimal place, computed as
+    ``trunc(x * 1e16) / 1e16``. Writing the full-precision values instead
+    changes up to 1e-16 in two thirds of the entries.
+    """
+    return table.apply(lambda col: np.trunc(col * 1e16) / 1e16)
 
 
 def main():

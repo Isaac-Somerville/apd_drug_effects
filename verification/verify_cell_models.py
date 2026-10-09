@@ -20,11 +20,10 @@ failure localises the problem rather than just signalling one.
    dataset. This is the expensive check — each point paces to a new limit cycle
    — so it runs on a sample by default.
 
-3. **Dataset rebuild.** Rebuild the derived columns from the raw simulation
-   outputs and compare against the shipped dataset. Cheap, and the strongest of
-   the three: it covers the cleaning tables, the relative-change normalisation
-   and the observation-noise draw in one comparison, and it should be
-   bit-identical.
+3. **Dataset rebuild.** Run :func:`simulation.build_apd_dataset.build` on the
+   shipped per-subject ``apd.csv`` files and compare the result against the
+   shipped dataset byte for byte. This covers the merge, the cleaning tables, 
+   the relative-change normalisation and the observation-noise draw in one comparison.
 
 Examples:
     python -m verification.verify_cell_models --checks features dataset
@@ -32,7 +31,10 @@ Examples:
 """
 
 import argparse
+import io
 import json
+import tempfile
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -40,8 +42,7 @@ import pandas as pd
 from cell_models import NUM_CYCLES_LIMIT_STATE, SPECIES, build_model
 from drug import Drug, load_drug_table
 from paths import APD_DATASET, DEFAULT_AP_FEATURES_DIR
-from simulation.build_apd_dataset import (KEY_COLUMNS, add_observation_noise,
-                                          add_relative_column, apply_cleaning)
+from simulation.build_apd_dataset import build
 from simulation.compute_ap_features import features_filename, measure_features
 from simulation.limit_cycle import STIM_PERIOD, run_to_limit_cycle
 from simulation.simulate_drug_block import (baseline_state_path,
@@ -80,7 +81,8 @@ def check_ap_features(species_list):
         features, num_cycles = measure_features(species)
         path = DEFAULT_AP_FEATURES_DIR / features_filename(species, num_cycles)
         if features is None or not path.exists():
-            print(f"   {species:11s} SKIP (no measurement or no shipped file)")
+            print(f"   {species:11s} FAIL (no measurement or no shipped file)")
+            all_ok = False
             continue
         shipped = json.load(open(path))
 
@@ -132,7 +134,8 @@ def check_drug_block(df, num_samples, seed=0):
 
         state_path = baseline_state_path(species, subject)
         if not state_path.exists():
-            print(f"   {species}/{drug_name}/v{subject} SKIP (no baseline state)")
+            print(f"   {species}/{drug_name}/v{subject} FAIL (no baseline state)")
+            all_ok = False
             continue
         with open(state_path) as f:
             baseline = json.load(f)
@@ -161,41 +164,31 @@ def check_drug_block(df, num_samples, seed=0):
     return all_ok
 
 
-def check_dataset_rebuild(raw_path):
-    """Rebuild the derived columns from the raw merge and compare to the dataset."""
+def check_dataset_rebuild(species_list):
+    """Rebuild the dataset from the shipped per-subject runs and compare bytes."""
     print("\n3. Dataset rebuild")
-    if not raw_path.exists():
-        print(f"   SKIP: raw merge not found at {raw_path}")
-        return True
+    with tempfile.TemporaryDirectory() as tmp:
+        out_path = Path(tmp) / "apd_drug_block.csv"
+        try:
+            build(species_list=species_list, out_path=out_path)
+        except FileNotFoundError as err:
+            print(f"   FAIL: {err}")
+            return False
+        rebuilt = out_path.read_bytes()
 
-    raw = pd.read_csv(raw_path, float_precision="round_trip")
-    raw = raw[raw["Species"].isin(SPECIES) | (raw["Species"] == "Benson_Dog")].copy()
-    raw["Species"] = raw["Species"].replace({"Benson_Dog": "Dog"})
-    raw = raw[["Species", "Drug", "Subject_ID", "Drug_Concentration", "APD_90"]]
+    if species_list == SPECIES:
+        identical = rebuilt == APD_DATASET.read_bytes()
+        print(f"   {'match' if identical else 'DIFFERS':8s} byte-for-byte against {APD_DATASET.name}")
+        return identical
 
-    rebuilt = add_observation_noise(apply_cleaning(add_relative_column(raw)))
+    # A species subset cannot be compared byte for byte; compare its rows.
     shipped = pd.read_csv(APD_DATASET, float_precision="round_trip")
-
-    a = rebuilt.sort_values(KEY_COLUMNS).reset_index(drop=True)
-    b = shipped.sort_values(KEY_COLUMNS).reset_index(drop=True)
-
-    if len(a) != len(b) or not a[KEY_COLUMNS].equals(b[KEY_COLUMNS]):
-        print(f"   DIFFERS: {len(a)} rebuilt rows vs {len(b)} shipped")
-        return False
-
-    all_ok = True
-    for column in ["APD_90", "APD_90_relative", "APD_90_relative_noisy"]:
-        x, y = a[column].to_numpy(), b[column].to_numpy()
-        nan_match = np.array_equal(np.isnan(x), np.isnan(y))
-        both = ~np.isnan(x) & ~np.isnan(y)
-        exact = np.array_equal(x[both], y[both])
-        all_ok &= nan_match and exact
-        print(
-            f"   {'match' if (nan_match and exact) else 'DIFFERS':8s} {column:24s} "
-            f"max|d|={np.abs(x[both] - y[both]).max():.3e}"
-        )
-    print(f"   {len(a)} rows compared")
-    return all_ok
+    shipped = shipped[shipped["Species"].isin(species_list)].reset_index(drop=True)
+    rebuilt = pd.read_csv(io.BytesIO(rebuilt), float_precision="round_trip")
+    identical = rebuilt.equals(shipped)
+    print(f"   {'match' if identical else 'DIFFERS':8s} {len(rebuilt)} rebuilt rows "
+          f"vs {len(shipped)} shipped rows for {', '.join(species_list)}")
+    return identical
 
 
 def main():
@@ -207,19 +200,7 @@ def main():
         help="Which checks to run. 'drug-block' is slow and is off by default.",
     )
     parser.add_argument("--num-drug-block-samples", type=int, default=2)
-    parser.add_argument(
-        "--raw-merge", default=None,
-        help="Path to the uncleaned merge of the per-subject runs, for the "
-             "rebuild check.",
-    )
     args = parser.parse_args()
-
-    from pathlib import Path
-    raw_path = (
-        Path(args.raw_merge) if args.raw_merge
-        else Path(__file__).resolve().parents[2]
-        / "Simulations/Outputs/drug_block/all_drug_block_limit_state.csv"
-    )
 
     df = pd.read_csv(APD_DATASET, float_precision="round_trip")
     results = {}
@@ -228,7 +209,7 @@ def main():
     if "drug-block" in args.checks:
         results["drug block"] = check_drug_block(df, args.num_drug_block_samples)
     if "dataset" in args.checks:
-        results["dataset rebuild"] = check_dataset_rebuild(raw_path)
+        results["dataset rebuild"] = check_dataset_rebuild(args.species)
 
     print("\n" + "-" * 60)
     for name, ok in results.items():

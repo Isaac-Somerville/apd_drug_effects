@@ -66,6 +66,9 @@ all of these reach this point looking valid. They were identified by inspecting
 the concentration-response curves, and the tables below are the authoritative
 record of what was excluded from the published analysis:
 
+* :data:`EXCLUDED_PAIRS` — a whole species x drug combination is left out.
+* :data:`EXCLUDED_SUBJECTS_ALL_DRUGS` — the subject has no drug-free APD, so no
+  relative change can be computed for it; its rows are dropped for every drug.
 * :data:`EXCLUDED_SUBJECTS` — the subject is unusable for that drug across the
   board; its rows are dropped.
 * :data:`EXCLUDED_POINTS` — the curve is sound lower down but not at these
@@ -107,6 +110,26 @@ PUBLISHED_NOISE_INDEX = APD_DATASET.parent / "published_noise_index.csv"
 # Manually identified non-physiological points (see module docstring)
 # ---------------------------------------------------------------------------
 
+#: Species x drug combinations left out entirely. Guinea pig under quinidine
+#: never produced a physiologically plausible concentration response: in the
+#: published runs fewer than half of its APDs (126 of 270) were measurable at
+#: all, and several of the measurable curves jump erratically between
+#: neighbouring concentrations.
+EXCLUDED_PAIRS = {("Guinea Pig", "quinidine")}
+
+#: Subjects with no drug-free APD in the published runs, keyed by species. With
+#: no zero-concentration reference their relative APD change is undefined, so
+#: they carry no observations, and every row for them is dropped. Guinea pig 23
+#: has no saved baseline state at all; the others were published without a
+#: drug-free APD although their saved state yields one, so a fresh
+#: ``simulate_drug_block`` run would otherwise bring them back.
+EXCLUDED_SUBJECTS_ALL_DRUGS = {
+    "Human": [31],
+    "Pig": [31],
+    "Rabbit": [31],
+    "Guinea Pig": [23],
+}
+
 #: Subjects whose response to a drug is unusable at every concentration, keyed
 #: by (species, drug). Every row for these subject/drug pairs is dropped.
 EXCLUDED_SUBJECTS = {
@@ -121,7 +144,6 @@ EXCLUDED_SUBJECTS = {
     ("Dog", "sotalol"): [1, 12, 13, 31],
     ("Dog", "terfenadine"): [1, 12],
     ("Guinea Pig", "diltiazem"): [9],
-    ("Guinea Pig", "quinidine"): [2, 12],
     ("Human", "cisapride"): [2, 15, 30],
     ("Human", "diltiazem"): [6],
     ("Human", "dofetilide"): [2, 15, 22],
@@ -130,7 +152,6 @@ EXCLUDED_SUBJECTS = {
     ("Human", "sotalol"): [2, 22],
     ("Mouse", "cisapride"): [31],
     ("Mouse", "quinidine"): [2, 25],
-    ("Rabbit", "quinidine"): [31],
 }
 
 #: Individual concentrations to exclude, keyed by (species, drug, subject). The
@@ -146,13 +167,6 @@ EXCLUDED_POINTS = {
     ("Guinea Pig", "bepridil", 25): [99.0],
     ("Guinea Pig", "chlorpromazine", 29): [38.0, 50.67, 63.33, 76.0, 88.67, 101.33],
     ("Guinea Pig", "ondansetron", 29): [46.33, 324.33],
-    ("Guinea Pig", "quinidine", 5): [6474.0, 7553.0, 8632.0, 9711.0],
-    ("Guinea Pig", "quinidine", 8): [6474.0],
-    ("Guinea Pig", "quinidine", 9): [4316.0, 5395.0, 6474.0, 7553.0, 8632.0, 9711.0],
-    ("Guinea Pig", "quinidine", 16): [8632.0, 9711.0],
-    ("Guinea Pig", "quinidine", 18): [4316.0, 5395.0, 6474.0, 8632.0, 9711.0],
-    ("Guinea Pig", "quinidine", 20): [7553.0, 8632.0, 9711.0],
-    ("Guinea Pig", "quinidine", 21): [3237.0, 4316.0],
     ("Guinea Pig", "ranolazine", 15): [3896.4],
     ("Guinea Pig", "terfenadine", 15): [9.33],
     ("Guinea Pig", "verapamil", 9): [189.0, 216.0, 243.0],
@@ -220,10 +234,17 @@ def load_runs(species_list, drug_list, max_subject_idx=MAX_SUBJECT_IDX):
                 )
                 if not path.exists():
                     continue
-                # round_trip: pandas' default float parser is accurate only to
-                # within one ulp, which would make the rebuilt dataset differ
-                # from the simulation output in the last bit of every value.
-                apd = pd.read_csv(path, index_col=0, float_precision="round_trip")
+                # Deliberately pandas' *default* float parser, not round_trip:
+                # it replays a defect of the research pipeline, like
+                # _replay_csv_roundtrip below. That pipeline merged these files
+                # by reading them with the default parser, which is accurate
+                # only to within one ulp, so the published APD_90 sits one ulp
+                # off the simulated value on about 7% of rows (73% for guinea
+                # pig, which was parsed twice; see below). Reading with
+                # round_trip reproduces the simulation output instead, and the
+                # rebuilt dataset then differs from the published one on 15% of
+                # its APD_90 rows and 24% of its relative rows.
+                apd = pd.read_csv(path, index_col=0)
                 if apd.isna().all().all():
                     continue
                 frame = apd.reset_index()
@@ -232,9 +253,13 @@ def load_runs(species_list, drug_list, max_subject_idx=MAX_SUBJECT_IDX):
                 frame["Drug"] = drug
                 frame["Subject_ID"] = subject_idx
                 frame["Drug_Concentration"] = frame["Drug_Concentration"].astype(float)
-                frame["APD_90"] = (
-                    pd.to_numeric(frame["APD_90"], errors="coerce") * conversion
-                )
+                frame["APD_90"] = pd.to_numeric(frame["APD_90"], errors="coerce")
+                if conversion != 1:
+                    # The research pipeline wrote the converted values to CSV
+                    # and read them back with the default parser a second time.
+                    frame["APD_90"] = _replay_csv_roundtrip(
+                        frame["APD_90"] * conversion
+                    )
                 rows.append(frame)
 
     if not rows:
@@ -316,6 +341,16 @@ def apply_cleaning(df):
         )
 
     removed_rows = 0
+    for species, drug in EXCLUDED_PAIRS:
+        mask = (df["Species"] == species) & (df["Drug"] == drug)
+        removed_rows += int(mask.sum())
+        df = df[~mask]
+
+    for species, subject_ids in EXCLUDED_SUBJECTS_ALL_DRUGS.items():
+        mask = (df["Species"] == species) & (df["Subject_ID"].isin(subject_ids))
+        removed_rows += int(mask.sum())
+        df = df[~mask]
+
     for (species, drug), subject_ids in EXCLUDED_SUBJECTS.items():
         mask = (
             (df["Species"] == species)

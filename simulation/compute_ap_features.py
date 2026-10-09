@@ -48,8 +48,9 @@ bounds and tolerances, and the dataset built from them reproduces bit-for-bit
 (see ``verification/``). This script documents how those files were derived and
 lets them be regenerated for a new species or a changed model, but rerunning it
 over the published species would move the feasibility bounds and so change
-which simulations are accepted. Write elsewhere with ``--out-dir`` unless that
-is what you intend.
+which simulations are accepted. It therefore writes under
+``outputs/ap_features/`` by default; pass ``--out-dir data/ap_features`` to
+replace the shipped files deliberately.
 
 Example:
     python -m simulation.compute_ap_features --species Dog Mouse
@@ -61,7 +62,7 @@ import json
 from pathlib import Path
 
 from cell_models import NUM_CYCLES_LIMIT_STATE, SPECIES, build_model
-from paths import AP_LIMITS_DIR, DEFAULT_AP_FEATURES_DIR, ensure
+from paths import AP_FEATURES_OUT, ensure
 from simulation.limit_cycle import STIM_PERIOD
 from simulation.simulate_drug_block import baseline_state_path
 
@@ -176,18 +177,16 @@ def main():
         help="Skip the feasibility-bound stage.",
     )
     parser.add_argument(
-        "--out-dir", default=None,
-        help="Write under this directory instead of overwriting the shipped "
-             "files, which the published dataset depends on. Creates "
-             "'defaults/' and 'limits/' subdirectories.",
+        "--out-dir", default=str(AP_FEATURES_OUT),
+        help="Directory to write under; 'defaults/' and 'limits/' are created "
+             "inside it. Defaults to outputs/ap_features/, so the shipped "
+             "files in data/ap_features/, which the published dataset depends "
+             "on, are only replaced if that directory is given explicitly.",
     )
     args = parser.parse_args()
 
-    if args.out_dir is None:
-        features_dir, limits_dir = DEFAULT_AP_FEATURES_DIR, AP_LIMITS_DIR
-    else:
-        features_dir = Path(args.out_dir) / "defaults"
-        limits_dir = Path(args.out_dir) / "limits"
+    features_dir = Path(args.out_dir) / "defaults"
+    limits_dir = Path(args.out_dir) / "limits"
     ensure(features_dir)
     ensure(limits_dir)
 

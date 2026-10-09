@@ -16,12 +16,26 @@ flattened may still be far from steady state.
 Tolerances are per species and per feature, and are read from
 ``data/ap_features/tolerances/``.  See
 ``simulation/compute_limit_cycle_tolerances.py`` for how they were derived.
+
+Run as a script, this module produces each species' reference subject: the
+*unperturbed* model, paced from its published initial conditions, saved as
+``data/saved_states/baseline/<species>/v0_limit_state.json``. Subject 0 is that
+reference rather than a perturbed subject. The published reference states 
+were made in one of two ways, recorded in :data:`FIXED_LENGTH_REFERENCE`, 
+and this reproduces both.
+
+Example:
+    python -m simulation.limit_cycle --species Dog Rabbit
 """
 
+import argparse
 import gc
 from dataclasses import dataclass, field
 
 import numpy as np
+
+from cell_models import NUM_CYCLES_LIMIT_STATE, SPECIES, build_model
+from paths import BASELINE_STATES, ensure
 
 #: Beats to integrate between convergence checks.
 CHECK_EVERY_N_CYCLES = 100
@@ -31,6 +45,18 @@ MAX_CHECKS = 250
 
 #: Pacing period in milliseconds (1 Hz).
 STIM_PERIOD = 1000
+
+#: Species whose published reference state was paced for exactly
+#: ``NUM_CYCLES_LIMIT_STATE`` beats with no convergence test. The others were
+#: paced to convergence, with testing starting only after
+#: :data:`REFERENCE_CHECKS_BEGIN_AFTER` blocks.
+FIXED_LENGTH_REFERENCE = {"Dog", "Mouse"}
+
+#: Blocks paced before convergence is first tested for a reference state.
+REFERENCE_CHECKS_BEGIN_AFTER = 10
+
+#: Most blocks paced for a reference state run to convergence.
+REFERENCE_MAX_CHECKS = 300
 
 
 @dataclass
@@ -89,6 +115,7 @@ def run_to_limit_cycle(
     max_checks=MAX_CHECKS,
     stop_on_bad_AP=False,
     check_feasibility=False,
+    checks_begin_after=1,
     verbose=False,
 ):
     """Pace ``model`` in blocks until its features stop changing.
@@ -110,6 +137,8 @@ def run_to_limit_cycle(
         check_feasibility: Also record which features were physiological on each
             block. Used when generating subjects, which must be both converged
             and feasible.
+        checks_begin_after: Blocks to pace before convergence is first tested.
+            The default tests from the second block on.
         verbose: Print the feature blocking convergence at each check.
 
     Returns:
@@ -168,7 +197,7 @@ def run_to_limit_cycle(
             )
 
         check_count += 1
-        if check_count > 1:
+        if check_count > checks_begin_after:
             converged = _all_features_settled(
                 model, feature_history, feasibility,
                 check_count * check_every_n_cycles, verbose,
@@ -220,3 +249,69 @@ def _all_features_settled(model, feature_history, feasibility, cycles, verbose):
             settled = False
 
     return settled
+
+
+def reference_limit_state(species, verbose=False):
+    """Pace the unperturbed ``species`` model from its initial conditions.
+
+    Returns:
+        ``(model, result)``, where ``model`` holds the unperturbed constants.
+    """
+    model = build_model(species)
+    model.initConsts()
+    if species in FIXED_LENGTH_REFERENCE:
+        result = run_to_limit_cycle(
+            model,
+            t_0=0.0,
+            max_checks=NUM_CYCLES_LIMIT_STATE[species] // CHECK_EVERY_N_CYCLES,
+            checks_begin_after=float("inf"),
+            verbose=verbose,
+        )
+    else:
+        result = run_to_limit_cycle(
+            model,
+            t_0=0.0,
+            max_checks=REFERENCE_MAX_CHECKS,
+            check_feasibility=True,
+            checks_begin_after=REFERENCE_CHECKS_BEGIN_AFTER,
+            verbose=verbose,
+        )
+    return model, result
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Pace each species' unperturbed model to its reference "
+                    "limit state (subject 0)."
+    )
+    parser.add_argument("--species", nargs="+", default=SPECIES, choices=SPECIES)
+    parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--verbose", action="store_true")
+    args = parser.parse_args()
+
+    for species in args.species:
+        out_dir = ensure(BASELINE_STATES / species)
+        out_path = out_dir / "v0_limit_state.json"
+        if out_path.exists() and not args.overwrite:
+            print(f"[{species}/v0] already exists, skipping")
+            continue
+        model, result = reference_limit_state(species, verbose=args.verbose)
+        if result.solver_failed:
+            print(f"[{species}/v0] solver failed")
+            continue
+        model.save_model(
+            result.voi[-1],
+            result.states[:, -1],
+            result.algebraic[:, -1],
+            model.constants,
+            f"{out_dir}/",
+            out_path.name,
+            seed=0,
+        )
+        how = ("fixed length" if species in FIXED_LENGTH_REFERENCE
+               else f"converged: {result.converged}")
+        print(f"[{species}/v0] saved after {result.num_cycles} cycles ({how})")
+
+
+if __name__ == "__main__":
+    main()

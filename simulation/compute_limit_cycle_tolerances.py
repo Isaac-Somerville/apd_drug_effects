@@ -30,8 +30,10 @@ convergence is decided entirely by its ionic concentrations. That is a real
 property of the shipped tolerances and the published dataset was produced with
 them, so it is preserved here rather than corrected.
 
-Writes ``data/ap_features/tolerances/``. The shipped files are the published
-ones; regenerating them changes which runs count as converged.
+Writes ``outputs/ap_features/tolerances/`` by default. The shipped files in
+``data/ap_features/tolerances/`` are the published ones and regenerating them
+changes which runs count as converged, so they are only replaced if
+``--out-dir data/ap_features/tolerances`` is given explicitly.
 
 Example:
     python -m simulation.compute_limit_cycle_tolerances --species Dog
@@ -40,9 +42,10 @@ Example:
 import argparse
 import gc
 import json
+from pathlib import Path
 
 from cell_models import NUM_CYCLES_LIMIT_STATE, SPECIES, build_model
-from paths import LIMIT_CYCLE_TOLERANCES_DIR, ensure
+from paths import AP_FEATURES_OUT, ensure
 from simulation.limit_cycle import CHECK_EVERY_N_CYCLES, STIM_PERIOD
 from simulation.simulate_drug_block import baseline_state_path
 
@@ -142,17 +145,23 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--species", nargs="+", default=SPECIES, choices=SPECIES)
     parser.add_argument("--num-blocks", type=int, default=NUM_BLOCKS)
+    parser.add_argument(
+        "--out-dir", default=str(AP_FEATURES_OUT / "tolerances"),
+        help="Directory to write to. Defaults to outputs/ap_features/tolerances/; "
+             "the shipped files are only replaced if their directory is given "
+             "explicitly.",
+    )
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
 
-    ensure(LIMIT_CYCLE_TOLERANCES_DIR)
+    out_dir = ensure(Path(args.out_dir))
 
     for species in args.species:
         history, model = sample_residual_movement(
             species, num_blocks=args.num_blocks, verbose=not args.quiet
         )
         tolerances = derive_tolerances(history, model)
-        path = LIMIT_CYCLE_TOLERANCES_DIR / tolerances_filename(
+        path = out_dir / tolerances_filename(
             species, NUM_CYCLES_LIMIT_STATE[species]
         )
         with open(path, "w") as f:

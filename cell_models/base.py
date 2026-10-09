@@ -191,7 +191,11 @@ class CardiacCellModel:
             # Override defaults with provided subset
             self.ap_limits_dict = {**default_ap_limits_dict, **ap_limits_dict}
 
-        # Integration steps per cycle below which APD is not resolved accurately.
+        # Integration steps per cycle. These were chosen by hand for each species,
+        # from the length of its baseline APD, to resolve the action potential
+        # while balancing solver speed against accuracy. APD is read off this
+        # grid, so every APD in the published dataset is quantised to it.
+        
         with open(MIN_STEPS_NEEDED, "r") as f:
             self.min_steps_needed = json.load(f).get(self.species, 4000)
 

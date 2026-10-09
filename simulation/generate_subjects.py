@@ -32,6 +32,7 @@ Examples:
 """
 
 import argparse
+import itertools
 import json
 import os
 import re
@@ -42,12 +43,14 @@ from simulation.limit_cycle import STIM_PERIOD, run_to_limit_cycle
 from simulation.simulate_drug_block import MAX_SUBJECT_IDX, parse_subject_range
 
 #: Seeds for subject ``n`` start here and increment on each rejected attempt.
-#: Deterministic in the subject index, so a given subject is reproducible
-#: independently of which others have been generated.
+#: The seed sequence is deterministic in the subject index, but the accepted
+#: subject is not fully determined by it: each attempt warm-starts from the
+#: nearest subject already on disk (see :func:`_warm_start`), so the limit state
+#: reached, and how many beats it takes, depend on which others exist when it
+#: runs. The stride is applied to ``|n - 1|``, so subjects 0 and 2 share a seed
+#: range; the shipped subject 0 is the unperturbed model (seed 0), produced by
+#: ``python -m simulation.limit_cycle`` instead.
 SEED_STRIDE = 10_000
-
-#: Abandon a subject after this many rejected perturbations.
-MAX_ATTEMPTS = 200
 
 _STATE_FILE_RE = re.compile(r"^v(\d+)_limit_state\.json$")
 
@@ -97,8 +100,8 @@ def generate_subject(species, subject_idx, overwrite=False, verbose=False):
     """Find and save one feasible, converged subject.
 
     Returns:
-        The seed that produced the accepted subject, or None if every attempt
-        was rejected.
+        The seed that produced the accepted subject, or None if the subject
+        already existed.
     """
     out_dir = ensure(BASELINE_STATES / species)
     out_path = out_dir / f"v{subject_idx}_limit_state.json"
@@ -112,7 +115,7 @@ def generate_subject(species, subject_idx, overwrite=False, verbose=False):
     model = build_model(species)
     base_seed = SEED_STRIDE * abs(subject_idx - 1)
 
-    for attempt in range(1, MAX_ATTEMPTS + 1):
+    for attempt in itertools.count(1):
         seed = base_seed + attempt
         model.initConsts(perturbation="lognormal", seed=seed)
         _warm_start(model, saved_states)
@@ -157,9 +160,6 @@ def generate_subject(species, subject_idx, overwrite=False, verbose=False):
         )
         return seed
 
-    print(f"[{species}/v{subject_idx}] no feasible subject in {MAX_ATTEMPTS} attempts")
-    return None
-
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
@@ -173,6 +173,10 @@ def main():
     args = parser.parse_args()
 
     subject_idxs = parse_subject_range(args.subjects)
+    if 0 in subject_idxs:
+        # Subject 0 is the unperturbed reference, not a perturbed sample.
+        print("Skipping subject 0: run `python -m simulation.limit_cycle` for it.")
+        subject_idxs = [i for i in subject_idxs if i != 0]
     combos = [(sp, idx) for idx in subject_idxs for sp in args.species]
 
     # Under PBS, each task generates exactly one subject.
